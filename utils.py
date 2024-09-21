@@ -5,7 +5,7 @@ import numpy as np
 
 
 class RecordingReader():
-    def __init__(self,path = "recording_rest"):
+    def __init__(self,path = "recording_rest2"):
         self.index = 0
         f = open(f"{path}/timestamps.txt")
         self.timestamps =  [float(t) for t in f.read().split(",")]

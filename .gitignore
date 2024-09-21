@@ -8,3 +8,8 @@
 /dataSources.local.xml
 ./.idea/*
 ./recording_rest2/*
+recording_rest2/
+
+.idea/
+
+__pycache__/

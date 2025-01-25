@@ -8,21 +8,24 @@ import utils
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 video_path = "D:/User/Nerdex/Documentos/ITBA/Tesis/Videos/source_videos_part_16-001/source_videos/W135/BlendShape/camera_front/W135_BlendShape_camera_front.mp4"
+#video_path = "D:/User/Nerdex/Documentos/ITBA/Tesis/Videos/manipulated_videos_part_00/manipulated_videos/end_to_end/164_M005.mp4"
 
-# Inicializamos MediaPipe para la detección de rostros
+# "D:\User\Nerdex\Documentos\ITBA\Tesis\Videos\manipulated_videos_part_00\manipulated_videos\end_to_end\003_M101.mp4"
+
+# init mediapipe
 mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils
 
-# Parámetros de detección de rostros
+# Face detection parameters
 face_detection = mp_face_detection.FaceDetection(min_detection_confidence=0.7)
 
-# Captura de video (puede ser desde la cámara o un archivo de video)
-cap = cv2.VideoCapture(video_path)  # O usar 0 para cámara
+# Video|
+cap = cv2.VideoCapture(video_path)
 
-# Parámetros del análisis de pulsos
-fs = 30  # Frecuencia de muestreo (FPS)
-window = 300  # Número de muestras para cada medición
-skin_vec = [0.3841, 0.5121, 0.7682]  # Vector de piel
+# Pulse rate parameters
+fs = 30  # (FPS)
+window = 300
+skin_vec = [0.3841, 0.5121, 0.7682]
 B, G, R = 0, 1, 2
 
 mean_colors = []
@@ -30,6 +33,8 @@ timestamps = []
 mean_colors_resampled = np.zeros((3, 1))
 
 while cap.isOpened():
+    number_of_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fps = cap.get(cv2.CAP_PROP_FPS)
     ret, frame = cap.read()
 
     if not ret:
@@ -39,11 +44,13 @@ while cap.isOpened():
     # Convertimos el fotograma a RGB (MediaPipe trabaja en RGB)
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # Realizamos la detección de rostros
+    # face detection
     results = face_detection.process(frame_rgb)
 
     # Si se detectan rostros
     if results.detections:
+        print("\n\n\n\n\n\n ACA \n\n\n\n\n")
+        print(results.detections)
         for detection in results.detections:
             # Dibujar las cajas y puntos en el rostro detectado
             mp_drawing.draw_detection(frame, detection)
